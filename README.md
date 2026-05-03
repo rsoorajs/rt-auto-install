@@ -8,10 +8,10 @@
 
 ## News
 
-**Current version** v2.5 released 2025/11/01
+**Current version** v2.6 released 2026/05/03
 
-	Added support for Debian 13 Trixie
-	Added support for Debian 13 Trixie on Raspberry Pi 3
+	Added support for Ubuntu 26.04 (Resolute Raccoon)
+	Added new function ENABLE_PHP_ARGC_ARGV
 
 For details, always go to Changelog.
 
@@ -27,6 +27,7 @@ For details, always go to Changelog.
 
 | Distro    | Manual installation (default) | Batch Support verified |
 | -------- | ------- | ------- |
+| Ubuntu 26.04 Resolute Raccoon | ✅ |  ✅ |
 | Ubuntu 25.04 Plucky Puffin | ✅ |  ✅ |
 | Ubuntu 24.10 Oracular Oriole | ✅ |  ✅ |
 | Ubuntu 24.04 Noble Numbat | ✅ |  ✅ |
@@ -106,7 +107,7 @@ Try it yourself:
 
 `sudo ./Rt-Install-minimal -f -b  -u ubuntu -r rutorrent -p rupassword -o ubu2004`
 
-`sudo ./Rt-Install-minimal -f -b  -u ubuntu -r rutorrent -p rupassword -o deb11bullseye`
+`sudo ./Rt-Install-minimal -f -b  -u debianuser -r rutorrent -p rupassword -o deb11bullseye`
 
 To see more info about batch parameters: `./Rt-Install-minimal -h`
 

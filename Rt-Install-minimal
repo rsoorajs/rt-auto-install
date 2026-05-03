@@ -1,9 +1,9 @@
 #!/bin/bash
 # PLEASE DO NOT SET ANY OF THE VARIABLES, THEY WILL BE POPULATED IN THE MENU
 # OR PROVIDE THEM WITH BATCH SWITCHES
-LASTMODIFIED="2025/11/01"
-SCRIPTVERSION="2.5"
-RUTORRENTVERSION=5.2.10
+LASTMODIFIED="2026/05/03"
+SCRIPTVERSION="2.6"
+RUTORRENTVERSION=5.2.0
 
 # Formatting variables
 #colors
@@ -111,7 +111,7 @@ OSRELEASE=$(grep PRETTY_NAME /etc/os-release)
 #checking distribution
 DISTRO=$(grep -i -o -e Debian -i -o -e Ubuntu -i -o -e Mint -i -o -e Raspbian -i -o -e LMDE <<< $OSRELEASE)
 #checking release
-DISTRONAMEVER=$(grep -i -o -e buster -i -o -e bullseye -i -o -e bookworm -i -o -e trixie -i -o -e "18.04" -i -o -e "18.10" -i -o -e "19.04" -i -o -e "20.04" -i -o -e "20.10" -i -o -e "21.04" -i -o -e "21.10" -i -o -e "22.04" -i -o -e "23.04" -i -o -e "19.10"  -i -o -e "19.2"  -i -o -e "19.3" -i -o -e "19.1" -i -o -e "19" -i -o -e "20" -i -o -e "20.1"  -i -o -e "20.2" -i -o -e "20.3" -i -o -e "21" -i -o -e "21.1"  -i -o -e "21.2" -i -o -e "21.3" -i -o -e "22" -i -o -e "elsie" -i -o -e "23.10" -i -o -e "24.04" -i -o -e "24.10" -i -o -e "25.04"<<< $OSRELEASE)
+DISTRONAMEVER=$(grep -i -o -e buster -i -o -e bullseye -i -o -e bookworm -i -o -e trixie -i -o -e "18.04" -i -o -e "18.10" -i -o -e "19.04" -i -o -e "20.04" -i -o -e "20.10" -i -o -e "21.04" -i -o -e "21.10" -i -o -e "22.04" -i -o -e "23.04" -i -o -e "19.10"  -i -o -e "19.2"  -i -o -e "19.3" -i -o -e "19.1" -i -o -e "19" -i -o -e "20" -i -o -e "20.1"  -i -o -e "20.2" -i -o -e "20.3" -i -o -e "21" -i -o -e "21.1"  -i -o -e "21.2" -i -o -e "21.3" -i -o -e "22" -i -o -e "elsie" -i -o -e "23.10" -i -o -e "24.04" -i -o -e "24.10" -i -o -e "25.04" -i -o -e "26.04"<<< $OSRELEASE)
 function EOL {
 echo 
 echo  "${RED}Your system has reached End Of Life - it is no longer usable, please change OS to newer release"
@@ -155,6 +155,7 @@ case $DISTRO in
 					24.04) echo "${PURPLE}${BOLD}release:${GREEN} 24.04 (Noble Numbat)";				OSFINALNAME=ubu2404 ;;
 					24.10) echo "${PURPLE}${BOLD}release:${GREEN} 24.10 (Oracular Oriole)";				OSFINALNAME=ubu2410 ;;
 					25.04) echo "${PURPLE}${BOLD}release:${GREEN} 25.04 (Plucky Puffin)";               OSFINALNAME=ubu2504 ;;
+					26.04) echo "${PURPLE}${BOLD}release:${GREEN} 26.04 (Resolute Raccoon)";               OSFINALNAME=ubu2604 ;;
 					*) echo "${YELLOW}It seems you run Ubuntu OS but unsupported release"; exit 4
 					esac;;
 			LMDE)
@@ -222,6 +223,7 @@ case $OSFINALNAME in
 					ubu2404)  RTVERSION=0.9.8; LIBTORRENTVERSION=0.13.8;   ;;
 					ubu2410)  RTVERSION=0.9.8; LIBTORRENTVERSION=0.13.8;   ;;
 					ubu2504)  RTVERSION=0.9.8; LIBTORRENTVERSION=0.13.8;   ;;
+					ubu2604)  RTVERSION=0.9.8; LIBTORRENTVERSION=0.13.8;   ;;
 					mint20)  RTVERSION=0.9.8; LIBTORRENTVERSION=0.13.8;   ;;
 					mint21)  RTVERSION=0.9.8; LIBTORRENTVERSION=0.13.8;   ;;
 					mint22)  RTVERSION=0.9.8; LIBTORRENTVERSION=0.13.8;   ;;
@@ -750,6 +752,15 @@ function INSTALL_COMPLETE {
 	fi
 }
 
+function ENABLE_PHP_ARGC_ARGV {
+echo "enabling argc argv in PHP"
+sudo sed -i 's/;register_argc_argv = Off/register_argc_argv = On/' /etc/php/8.5/apache2/php.ini 
+CHECKLASTRC
+echo "restarting apache"
+sudo systemctl restart apache2
+CHECKLASTRC
+}
+
 function INSTALL_SYSTEMD_SERVICE {
 	cat > "/etc/systemd/system/rtorrent.service" <<-EOF
 	[Unit]
@@ -980,9 +991,9 @@ SET_RTORRENT_GROUP
 HOMEDIR=$(cat /etc/passwd | grep /"$RTORRENT_USER":/ | cut -d: -f6)
 # - - - - - - 
 ##debuging options
-##echo 2 sysuser: $RTORRENT_USER rtuser: $USER rtpass: $USER_PASS WEB_USER_ARRAY: $WEB_USER_ARRAY WEB_USER: $WEB_USER  
-##echo homedir: $HOMEDIR 
-##sleep 10
+###echo 2 sysuser: $RTORRENT_USER rtuser: $USER rtpass: $USER_PASS WEB_USER_ARRAY: $WEB_USER_ARRAY WEB_USER: $WEB_USER  
+###echo homedir: $HOMEDIR 
+###sleep 10
 # - - - - - -
 PREPARE_CONFIG_FILES
 APT_DEPENDENCIES_NOSCGI
@@ -991,11 +1002,14 @@ WEB_USER_ARRAY+=($USER)
 INSTALL_RTORRENT_APT_R98
 INSTALL_SCGI
 INSTALL_RUTORRENT
+if [ "$OSFINALNAME" == ubu2604 ]; then
+    ENABLE_PHP_ARGC_ARGV
+fi
 ####
 ##debuging options
-##echo 3 sysuser: $RTORRENT_USER rtuser: $USER rtpass: $USER_PASS WEB_USER_ARRAY: $WEB_USER_ARRAY WEB_USER: $WEB_USER  
-##echo homedir: $HOMEDIR 
-##sleep 10
+###echo 3 sysuser: $RTORRENT_USER rtuser: $USER rtpass: $USER_PASS WEB_USER_ARRAY: $WEB_USER_ARRAY WEB_USER: $WEB_USER  
+###echo homedir: $HOMEDIR 
+###sleep 10
 # - - - - - -
 CONFIGURE_APACHE
 printf "%s\n" "${WEB_USER_ARRAY[@]}" > /var/www/rutorrent/.htpasswd
@@ -1088,10 +1102,10 @@ while true; do
     			ubu1810)  APT_DEPENDENCIES; INSTALL_RTORRENT_APT_R97; INSTALL_RUTORRENT							;;
     			ubu1904)  APT_DEPENDENCIES; INSTALL_RTORRENT_APT_R97; INSTALL_RUTORRENT							;;
                  	ubu1910)  APT_DEPENDENCIES; INSTALL_RTORRENT_APT_R97; INSTALL_RUTORRENT							;;
-				#modern systems without scgi package ;(
-					deb11bullseye)  APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT	;;
-					deb12bookworm)  APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT 	;;
-					deb13trixie)  APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT 	;;
+			#modern systems without scgi package ;(
+			deb11bullseye)  APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT			;;
+			deb12bookworm)  APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT		 	;;
+			deb13trixie)    APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT		 	;;
                     	ubu2004)  		APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT		;;
 			ubu2010)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT      		;;
 			ubu2104)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT      		;;
@@ -1102,6 +1116,7 @@ while true; do
 			ubu2404)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT     		;;
 			ubu2410)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT		      	;;
 			ubu2504)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT                  ;;
+			ubu2604)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT; sleep 10; ENABLE_PHP_ARGC_ARGV ;;
 			mint20)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT      		;;
 			mint201)           APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT      		;;
 			mint202)           APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT      		;;

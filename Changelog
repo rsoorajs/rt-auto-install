@@ -1,3 +1,8 @@
+Ubuntu 26.04 (Resolute Raccoon
+VERSION 2.6   2026-05-03
+* Added support for Ubuntu 26.04 Resolute Raccoon
+* Added new function ENABLE_PHP_ARGC_ARGV used by Ubuntu 26.04 to enable some PHP functions
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 VERSION 2.5   2025-11-01
 * Added support for Debian 13 Trixie
 * Added support for Debian 13 Trixie on Raspberry Pi 3
