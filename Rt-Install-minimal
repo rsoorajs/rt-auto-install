@@ -1,9 +1,9 @@
 #!/bin/bash
 # PLEASE DO NOT SET ANY OF THE VARIABLES, THEY WILL BE POPULATED IN THE MENU
 # OR PROVIDE THEM WITH BATCH SWITCHES
-LASTMODIFIED="2026/05/03"
-SCRIPTVERSION="2.6"
-RUTORRENTVERSION=5.2.0
+LASTMODIFIED="2026/04/30"
+SCRIPTVERSION="2.5"
+RUTORRENTVERSION=5.3.3
 
 # Formatting variables
 #colors
@@ -52,7 +52,7 @@ echo "   -o --os           - select OS flavor"
 echo "   eg sudo ./Rt-Install-minimal -f -b -u ubuntu -r rt -p secret -o ubu2004"
 echo " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 echo "${CYAN} List of available OS parameters for batch:  "
-echo "${YELLOW} ubu2004 ubu2204 ubu2304 ubu2310 ubu2404 ubu2410 mint20 mint201 mint202 mint203 mint21 mint211 mint212 mint213 mint22 deb11bullseye deb12bookworm"
+echo "${YELLOW} ubu2004 ubu2204 ubu2304 ubu2310 ubu2404 ubu2504 ubu2604  mint201 mint202 mint203 mint21 mint211 mint212 mint213 mint22 deb11bullseye deb12bookworm deb13trixie"
 echo ""
 echo "${NORMAL} All above are optional. No need to use them."
 echo ""
@@ -125,16 +125,16 @@ case $DISTRO in
 			Debian)
 				echo "${BOLD}name: ${GREEN}Debian"
 						case $DISTRONAMEVER in
-					buster) echo "${PURPLE}${BOLD}release:${GREEN} 10 (Buster)" ;	EOL ;				OSFINALNAME=deb10buster;	;;
+					buster) echo "${PURPLE}${BOLD}release:${GREEN} 10 (Buster)" ;			EOL ;		OSFINALNAME=deb10buster;	;;
 				 	bullseye) echo "${PURPLE}${BOLD}release:${GREEN} 11 (Bullseye)" ;				OSFINALNAME=deb11bullseye;	;;
 					bookworm) echo "${PURPLE}${BOLD}release:${GREEN} 12 (Bookworm)" ;				OSFINALNAME=deb12bookworm;	;;
-					trixie) echo "${PURPLE}${BOLD}release:${GREEN} 13 (Trixie)" ;				OSFINALNAME=deb13trixie;	;;
+					trixie) echo "${PURPLE}${BOLD}release:${GREEN} 13 (Trixie)" ;					OSFINALNAME=deb13trixie;	;;
 					*) echo "${YELLOW}It seems you run Debian OS but unsupported release"; exit 4							;;
 					esac;;
 			Raspbian)
                 		echo "${BOLD}name: ${GREEN}Rasbian"
                     				case $DISTRONAMEVER in
-					buster) echo "${PURPLE}${BOLD}release:${GREEN} 10 (Buster)" ;	EOL ;				OSFINALNAME=deb10buster;	;;
+					buster) echo "${PURPLE}${BOLD}release:${GREEN} 10 (Buster)" ;			EOL ;		OSFINALNAME=deb10buster;	;;
 			                *) echo "${YELLOW}It seems you run Rasbian OS but unsupported release"; exit 4							;;
                     esac;;
 
@@ -150,12 +150,12 @@ case $DISTRO in
 					21.04) echo "${PURPLE}${BOLD}release:${GREEN} 21.04 (Hirsute Hippo)";		EOL ;		OSFINALNAME=ubu2104 ;;
 					21.10) echo "${PURPLE}${BOLD}release:${GREEN} 21.10 (Impish Indri)";		EOL ;		OSFINALNAME=ubu2110 ;;
 					22.04) echo "${PURPLE}${BOLD}release:${GREEN} 22.04 (Jammy Jellifish)";				OSFINALNAME=ubu2204 ;;
-					23.04) echo "${PURPLE}${BOLD}release:${GREEN} 23.04 (Lunar Lobster)";		EOL ;	OSFINALNAME=ubu2304 ;;
-					23.10) echo "${PURPLE}${BOLD}release:${GREEN} 23.10 (Mantic Minotaur)";		EOL ;	OSFINALNAME=ubu2310 ;;
+					23.04) echo "${PURPLE}${BOLD}release:${GREEN} 23.04 (Lunar Lobster)";		EOL ;		OSFINALNAME=ubu2304 ;;
+					23.10) echo "${PURPLE}${BOLD}release:${GREEN} 23.10 (Mantic Minotaur)";		EOL ;		OSFINALNAME=ubu2310 ;;
 					24.04) echo "${PURPLE}${BOLD}release:${GREEN} 24.04 (Noble Numbat)";				OSFINALNAME=ubu2404 ;;
-					24.10) echo "${PURPLE}${BOLD}release:${GREEN} 24.10 (Oracular Oriole)";				OSFINALNAME=ubu2410 ;;
-					25.04) echo "${PURPLE}${BOLD}release:${GREEN} 25.04 (Plucky Puffin)";               OSFINALNAME=ubu2504 ;;
-					26.04) echo "${PURPLE}${BOLD}release:${GREEN} 26.04 (Resolute Raccoon)";               OSFINALNAME=ubu2604 ;;
+					24.10) echo "${PURPLE}${BOLD}release:${GREEN} 24.10 (Oracular Oriole)";		EOL ;		OSFINALNAME=ubu2410 ;;
+					25.04) echo "${PURPLE}${BOLD}release:${GREEN} 25.04 (Plucky Puffin)";               		OSFINALNAME=ubu2504 ;;
+					26.04) echo "${PURPLE}${BOLD}release:${GREEN} 26.04 (Resolute Raccoon)";               		OSFINALNAME=ubu2604 ;;
 					*) echo "${YELLOW}It seems you run Ubuntu OS but unsupported release"; exit 4
 					esac;;
 			LMDE)
@@ -169,14 +169,14 @@ case $DISTRO in
 			Mint) 
 				echo "${BOLD}name: ${GREEN}Mint"
 						case $DISTRONAMEVER in
-	    				19.3) echo "${PURPLE}${BOLD}release:${GREEN} 19.3 (Tricia)" ; EOL ;				OSFINALNAME=ubu1804 ;;
-    					19.2) echo "${PURPLE}${BOLD}release:${GREEN} 19.2 (Tina)" ;   EOL ;				OSFINALNAME=ubu1804 ;;
-    					19.1) echo "${PURPLE}${BOLD}release:${GREEN} 19.1 (Tessa)" ;  EOL ;				OSFINALNAME=ubu1804 ;;
-    					19) echo "${PURPLE}${BOLD}release:${GREEN} 19 (Tara)" ;		  EOL ;				OSFINALNAME=ubu1804 ;;
-					20) echo "${PURPLE}${BOLD}release:${GREEN} 20 (Ulyana)" ; 		  EOL ;			OSFINALNAME=mint20 ;;
-					20.1) echo "${PURPLE}${BOLD}release:${GREEN} 20.1 (Ulyssa)" ; 	  EOL ;				OSFINALNAME=mint201 ;;
-					20.2) echo "${PURPLE}${BOLD}release:${GREEN} 20.2 (Uma)" ; 		  EOL ;		OSFINALNAME=mint202 ;;
-					20.3) echo "${PURPLE}${BOLD}release:${GREEN} 20.3 (Una)" ; 		  EOL ;			OSFINALNAME=mint203 ;;
+	    				19.3) echo "${PURPLE}${BOLD}release:${GREEN} 19.3 (Tricia)" ;			EOL ;		OSFINALNAME=ubu1804 ;;
+    					19.2) echo "${PURPLE}${BOLD}release:${GREEN} 19.2 (Tina)" ;			EOL ;		OSFINALNAME=ubu1804 ;;
+    					19.1) echo "${PURPLE}${BOLD}release:${GREEN} 19.1 (Tessa)" ;			EOL ;		OSFINALNAME=ubu1804 ;;
+    					19) echo "${PURPLE}${BOLD}release:${GREEN} 19 (Tara)" ;				EOL ;		OSFINALNAME=ubu1804 ;;
+					20) echo "${PURPLE}${BOLD}release:${GREEN} 20 (Ulyana)" ;			EOL ;		OSFINALNAME=mint20 ;;
+					20.1) echo "${PURPLE}${BOLD}release:${GREEN} 20.1 (Ulyssa)" ;			EOL ;		OSFINALNAME=mint201 ;;
+					20.2) echo "${PURPLE}${BOLD}release:${GREEN} 20.2 (Uma)" ; 		  	EOL ;		OSFINALNAME=mint202 ;;
+					20.3) echo "${PURPLE}${BOLD}release:${GREEN} 20.3 (Una)" ; 		  	EOL ;		OSFINALNAME=mint203 ;;
 					21) echo "${PURPLE}${BOLD}release:${GREEN} 21 (Vanessa)" ;					OSFINALNAME=mint21 ;;
 					21.1) echo "${PURPLE}${BOLD}release:${GREEN} 21.1 (Vera)" ;					OSFINALNAME=mint211 ;;
 					21.2) echo "${PURPLE}${BOLD}release:${GREEN} 21.2 (Victoria)" ;					OSFINALNAME=mint212 ;;
@@ -640,9 +640,9 @@ function INSTALL_RUTORRENT {
 
 # Function for configuring apache
 function CONFIGURE_APACHE {
-
 	# Creating self-signed certs
-	if [ ! -f /etc/ssl/certs/apache-selfsigned.crt ]; then
+	"${YELLOW}Generating SSL certficate${NORMAL}"
+	"${CYAN}Generating SSL key pairs"
         	openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key << SSLCONFIG > /etc/ssl/certs/apache-selfsigned.crt
 .
 .
@@ -652,8 +652,13 @@ Bercik rt-auto-install seedbox
 .
 .
 SSLCONFIG
+
+CHECKLASTRC
+
+
+echo "${CYAN}enable module SSL"
 		a2enmod ssl
-        fi
+		CHECKLASTRC
 
 	# Creating symlink for scgi.load
 	if [ ! -h /etc/apache2/mods-enabled/scgi.load ]; then
@@ -684,8 +689,9 @@ SSLCONFIG
 
 	# Creating .htaccess file
 	printf "%s\n" "${WEB_USER_ARRAY[@]}" > /var/www/rutorrent/.htpasswd
-}
 
+
+}
 function INSTALL_FFMPEG {
 	printf "\n# ffpmeg mirror\ndeb http://www.deb-multimedia.org buster main non-free\n" >> /etc/apt/sources.list
 	wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb
@@ -814,8 +820,10 @@ cat > "Files/001-default-rutorrent.conf" << 'EOF'
   DocumentRoot /var/www/
 
   LogLevel info ssl:warn
-  ErrorLog /var/log/apache2/ssl_error.log
-  CustomLog /var/log/apache2/ssl_access.log common
+  ErrorLog ${APACHE_LOG_DIR}/ssl_error.log
+  CustomLog ${APACHE_LOG_DIR}/ssl_access.log common
+  CustomLog ${APACHE_LOG_DIR}/rutorrent.log vhost_combined
+  SCGIMount /rutorrent/RPC2 127.0.0.1:5000
   
   <Directory "/var/www/rutorrent">
       AuthName "Bercik's rt-auto-install"
@@ -1116,7 +1124,7 @@ while true; do
 			ubu2404)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT     		;;
 			ubu2410)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT		      	;;
 			ubu2504)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT                  ;;
-			ubu2604)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT; sleep 10; ENABLE_PHP_ARGC_ARGV ;;
+			ubu2604)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT;  ENABLE_PHP_ARGC_ARGV ;;
 			mint20)            APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT      		;;
 			mint201)           APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT      		;;
 			mint202)           APT_DEPENDENCIES_NOSCGI; INSTALL_RTORRENT_APT_R98; INSTALL_SCGI; INSTALL_RUTORRENT      		;;
